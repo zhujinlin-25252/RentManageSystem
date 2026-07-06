@@ -1,0 +1,28 @@
+# ============================================================
+#  生产环境配置 (application-prod.yml)
+#  使用方式: java -jar app.jar --spring.profiles.active=prod
+#
+#  ⚠️ 部署到生产环境前必须修改以下内容：
+#  1. 数据库密码 → 使用环境变量 ${DB_PASSWORD}
+#  2. 关闭SQL日志打印
+#  3. JWT密钥 → 使用强随机字符串并通过环境变量注入
+#  4. 日志级别改为 INFO 或 WARN
+# ============================================================
+
+spring:
+  # 数据源 - 生产环境（从环境变量读取敏感信息）
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:rent_manage}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=true&serverPublicKeyName=caching_sha2_password
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+
+# MyBatis-Plus - 生产环境关闭SQL日志（性能优化！）
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+# 日志级别 - 生产环境只记录重要日志
+logging:
+  level:
+    com.rent.managesystem: info
+    org.springframework.security: warn
